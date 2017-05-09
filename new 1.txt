@@ -1,0 +1,49 @@
+		<div class = "container col-md-12 col-md-offset-4" style="background-color: #fff; border-radius: 5px; margin-top: 240px;">
+		
+			<form class="form-horizontal" action='action.php' method="POST">
+			
+				<fieldset>	<!-- İleride form üzerinde ki etkileri barındıracak-->
+					<div  align="center" id="legend">	<!-- üstteki register yazısı ortalanması -->
+					  <legend class="telecomMavisi" style="margin-top:60px;><h1><b><font color="#2eccfa">Add Campaign</font></h1></legend>
+					</div>
+					
+					<div class="control-group" >
+					  <!-- ID -->
+					  <!-- When used together with the <label> element, the for attribute specifies which form element a label is bound to. -->
+					  <div class="controls" style="margin-top:50px;">
+						<input type="text" id="Name" name="Name" placeholder="Campaign Name" class="input-xlarge col-md-12" required title="Please enter Campaign Name. "> <!-- Uzunluk kısıtlaması -->
+					  </div>
+					</div>
+				 
+					<div class="control-group">
+					  <!-- name -->
+					  <div class="controls" style="margin-top:100px;">
+						<input min="0" max="1000"  type="number" id="Amount" name="Amount" placeholder="Amount" class="input-xlarge col-md-12" required title="Please enter Amount. "> <!-- Uzunluk kısıtlaması -->
+					  </div>
+					</div>
+					<div class="control-group" > 
+					  <div class="controls" style="margin-top:150px;">
+						<input type="number" id="Minute" name="Minute" placeholder="Minute" class="input-xlarge col-md-12" min = "0" max = "1000" required title="Please enter Minutes."> <!-- Uzunluk kısıtlaması -->
+					  </div>
+					</div>
+					<div class="control-group" >
+					  <!-- ID -->
+					  <!-- When used together with the <label> element, the for attribute specifies which form element a label is bound to. -->
+					  <div class="controls" style="margin-top:200px;">
+						<input type="number" id="Message" name="Message" placeholder="Message" class="input-xlarge col-md-12" min = "0" max = "10000" required title="Please enter be Message."> <!-- Uzunluk kısıtlaması -->
+					  </div>
+					</div>
+					<div class="control-group" >
+					  <div class="controls" style="margin-top:250px;">
+						<input type="number" id="Cellular" name="Cellular" placeholder="Cellular" class="input-xlarge col-md-12"  required title="Please enter Cellular."> <!-- Uzunluk kısıtlaması -->
+					  </div>
+					</div>
+					<div class="control-group">
+					  <!-- Button -->
+					  <div class="controls" style="margin-top:300px;">
+						<button class="btn btn-info col-md-12" style="margin-bottom: 60px;">UPDATE</button>
+					  </div>
+					</div>
+				</fieldset>
+			</form>
+		</div>
