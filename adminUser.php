@@ -51,8 +51,7 @@
 				<table id="mytable" class="table table-bordred table-striped">
 					   
 					   <thead>
-					   
-						<th><input type="checkbox" id="checkall" /></th>
+						<th></th>
 						<th>ID</th>
 						<th>Name</th>
 						<th>Surname</th>
@@ -155,6 +154,7 @@
 	</body>
 </html>
 
+<!--
 <script>
 
 $(document).ready(function(){	/* Check all checkbox */
@@ -175,6 +175,7 @@ $("#mytable #checkall").click(function () {
 });
 
 </script>
+-->
 
 <script>
 

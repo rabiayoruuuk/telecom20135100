@@ -1,3 +1,28 @@
+<?php
+
+	require_once("BusinessLayer/Logic_User.php");
+	
+	$errorMeesage = "";
+	
+	if(isset($_POST["PhoneNumber"]) && isset($_POST["Password"])&& isset($_POST["PasswordAgain"])) {
+		
+		$phoneNumber = trim($_POST["PhoneNumber"]);
+		$password = trim($_POST["Password"]);
+		$passwordAgain = trim($_POST["PasswordAgain"]);
+
+		$errorMeesage = "";
+		$result = Logic_User::deleteUser($phoneNumber, $password, $passwordAgain);
+		
+		if(!$result) {
+		
+			$errorMeesage = "Kullanıcı silinme işlemi başarısız!";
+		}
+		else{
+			
+			echo '<script>console.log("User has been deleted successfully.")</script>';
+		}
+	}
+?>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -14,8 +39,9 @@
 		
 			<img src="main_photo.jpg" class="img-rounded" height="520">
 		</div>
+		
 		<div class = "container col-md-4 col-md-offset-4">
-			<form class="form-horizontal" action='action.php' method="POST">
+			<form class="form-horizontal" action="<?php $_PHP_SELF ?>" method="POST">
 			
 				<fieldset>	<!-- İleride form üzerinde ki etkileri barındıracak-->
 					<div  align="center" id="legend">	<!-- üstteki register yazısı ortalanması -->
@@ -26,28 +52,28 @@
 					  <!-- ID -->
 					  <!-- When used together with the <label> element, the for attribute specifies which form element a label is bound to. -->
 					  <div class="controls" style="margin-top:20px;">
-						<input pattern=".{11}" type="number" id="PhoneNumber" name="Phone Number" placeholder="Phone Number" class="input-xlarge col-md-12" min = "05000000000" max = "05999999999" required title="Please enter Phone Number. Its length must be 11 digits."> <!-- Uzunluk kısıtlaması -->
+						<input pattern=".{11}" type="number" id="PhoneNumber" name="PhoneNumber" placeholder="Phone Number" class="input-xlarge col-md-12" min = "05000000000" max = "05999999999" required title="Please enter Phone Number. Its length must be 11 digits."> <!-- Uzunluk kısıtlaması -->
 					  </div>
 					</div>
 				 
 					<div class="control-group">
 					  <!-- name -->
 					  <div class="controls" style="margin-top:55px;">
-						<input  pattern=".{6,}" type="password" id="password" name="password" placeholder="Please Enter Password" class="input-xlarge col-md-12"  required title="Please Password. Its length exactly 6."> <!-- Uzunluk kısıtlaması -->
+						<input  pattern=".{6,}" type="password" id="password" name="Password" placeholder="Please Enter Password" class="input-xlarge col-md-12"  required title="Please Password. Its length exactly 6."> <!-- Uzunluk kısıtlaması -->
 					  </div>
 					</div>
 				 
 					<div class="control-group">
 					<!-- surname -->
 					  <div class="controls" style="margin-top:90px;">
-						<input  pattern=".{6,}" type="password" id="passwordAgain" name="passwordAgain" placeholder="Please Enter Password Again " class="input-xlarge col-md-12"  required title="Please Password. Its length exactly 6."> <!-- Uzunluk kısıtlaması -->
+						<input  pattern=".{6,}" type="password" id="passwordAgain" name="PasswordAgain" placeholder="Please Enter Password Again " class="input-xlarge col-md-12"  required title="Please Password. Its length exactly 6."> <!-- Uzunluk kısıtlaması -->
 					  </div>
 					</div>
 				 
 					<div class="control-group">
 					  <!-- Button -->
 					  <div class="controls" style="margin-top:170px;">
-						<button class="btn btn-info col-md-12">Deregister</button>
+						<button type="submit" class="btn btn-info col-md-12">Deregister</button>
 					  </div>
 					</div>
 				</fieldset>
