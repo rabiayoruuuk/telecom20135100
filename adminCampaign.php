@@ -6,13 +6,14 @@
 	if(isset($_POST["Name"]) && isset($_POST["Minute"]) && isset($_POST["Cellular"])&& isset($_POST["Message"])&& isset($_POST["Amount"])) {
 	echo '<script>console.log("Here")</script>';
 		$name = trim($_POST["Name"]);
+		$id = trim($_POST["ID"]);
 		$minute = trim($_POST["Minute"]);
 		$cellular = trim($_POST["Cellular"]);
 		$message = trim($_POST["Message"]);
 		$amount = trim($_POST["Amount"]);
-		$ID=1;
+
 		$errorMeesage = "";
-		$result = Logic_Campaign:: updateCampaign($ID, $name, $minute, $cellular, $message, $amount);
+		$result = Logic_Campaign:: updateCampaign($id, $name, $minute, $cellular, $message, $amount);
 
 		if(!$result) {
 			$errorMeesage = "Update Failed!";
@@ -41,8 +42,7 @@
 				<table id="mytable" class="table table-bordred table-striped">
 					   
 					   <thead>
-					   
-						<th><input type="checkbox" id="checkall" /></th>
+						<th></th>
 						<th>ID</th>
 						<th>Campaign Name</th>
 						<th>Minute</th>
@@ -50,7 +50,6 @@
 						<th>Cellular</th>
 						<th>Amount</th>
 						 <th>Edit</th>
-						 <th>Delete</th>
 					   </thead>
 					   
 					<tbody>
@@ -61,7 +60,7 @@
 							for($i = 0; $i < count($campaignList); $i++) {
 						?>
 							<tr>
-								<td><input type="checkbox" class="checkthis" /></td>
+								<td><input type="checkbox" class="checkthis" user-id="<?php echo $campaignList[$i] -> getID();?>"/></td>
 								<td><?php echo $campaignList[$i] -> getID();?></td>
 								<td><?php echo $campaignList[$i] -> getName();?></td>
 								<td><?php echo $campaignList[$i] -> getMinute();?></td>
@@ -69,7 +68,6 @@
 								<td><?php echo $campaignList[$i] -> getCellular();?></td>
 								<td><?php echo $campaignList[$i] -> getAmount();?></td>
 								<td><p data-placement="top" data-toggle="tooltip" title="Edit"><button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" ><span class="glyphicon glyphicon-pencil"></span></button></p></td>
-								<td><p data-placement="top" data-toggle="tooltip" title="Delete"><button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete" ><span class="glyphicon glyphicon-trash"></span></button></p></td>
 							</tr>
 						<?php
 							}
@@ -162,6 +160,7 @@
 	</body>
 </html>
 
+<!--
 <script>
 
 $(document).ready(function(){	/* Check all checkbox */
@@ -179,22 +178,41 @@ $("#mytable #checkall").click(function () {
     });
     
     $("[data-toggle=tooltip]").tooltip();
-});
-
+}); -->
 </script>
 
 <script>
 
 $(document).ready(function() { // when DOM is ready, this will be executed
 			
-			$("#update").click(function(e) { // click event for "btnCallSrvc"
+			
+			function getID(){
 				
-				var name = $("#Name").val(); // get country code
+				var checkboxes = $(".checkthis");
+				var id = null;
+				
+				for(var i=0; i < checkboxes.length; i++) {
+					if($(checkboxes[i]).is(":checked")){
+						id = $(checkboxes[i]).attr("user-id");
+						break;
+					}
+				}
+				return id;
+			}
+			
+			
+			$("#update").click(function(e) {	// update button event
+				
+				var name = $("#Name").val();
+				var id = null;
+				
 				if(name == "") {
 					alert("Enter name!");
 					$("#Name").focus();
 					return;
 				}
+				
+				id = getID();
 				
 				var minute = $("#Minute").val();
 				var cellular = $("#Cellular").val();
@@ -203,8 +221,9 @@ $(document).ready(function() { // when DOM is ready, this will be executed
 								
 				$.ajax({ // start an ajax POST 
 					type	: "POST",
-					url		: "admin.php",
+					url		: "adminCampaign.php",
 					data	:  { 
+						"ID" : id,
 						"Name"	: name, 
 						"Minute": minute, 
 						"Cellular"	: cellular,
@@ -213,6 +232,7 @@ $(document).ready(function() { // when DOM is ready, this will be executed
 					},
 					success : function(reply) { // when ajax executed successfully	
 						console.log(reply);
+						location.reload();
 					},
 					error   : function(err) { // some unknown error happened
 						console.log(err);

@@ -1,4 +1,43 @@
-﻿<!DOCTYPE html>
+﻿<?php 
+
+	function Redirect($url, $statusCode = 303)
+	{
+				
+		if (headers_sent() === false)
+		{
+			header('Location: ' . $url, true, $statusCode);
+		}
+
+		exit();	/*Destruct the this page */
+	}
+
+	require_once("BusinessLayer/Logic_User.php");
+	
+	$errorMeesage = "";
+	
+	if(isset($_POST["ID"]) && isset($_POST["Name"])&& isset($_POST["Surname"])) {
+		
+		$userID = trim($_POST["ID"]);
+		$name = trim($_POST["Name"]);
+		$surname = trim($_POST["Surname"]);
+
+		$errorMeesage = "";
+		$result = Logic_User::createUser($userID, $name, $surname);
+		
+		if(!$result) {
+		
+			$errorMeesage = "Yeni kullanıcı kaydı başarısız!";
+		}
+		else{	/* If user has been registred and returned success message, user will be redirected to the home page */
+			
+			setcookie("Name", $name, time() + (100), "/");
+			redirect('http://localhost:8080/project/homePage.php', false);	/* Go to home page */
+		}
+	}
+?>
+
+
+<!DOCTYPE html>
 <html>
 	<head>
 		<?php 
@@ -8,14 +47,14 @@
 	</head>
 	<body>
 		<?php 
-			include 'navbar.php';
+			//include 'navbar.php';
 		?>
 		<div>
 		
-			<img src="main_photo.jpg" class="img-rounded" height="520">
+			<img src="main_photo.jpg" class="img-rounded" height="520" margin-top="100px">
 		</div>
 		<div class = "container col-md-4 col-md-offset-4">
-			<form class="form-horizontal" action='action.php' method="POST">
+			<form class="form-horizontal" action="<?php $_PHP_SELF ?>" method="POST">
 			
 				<fieldset>	<!-- İleride form üzerinde ki etkileri barındıracak-->
 					<div  align="center" id="legend">	<!-- üstteki register yazısı ortalanması -->
@@ -33,21 +72,21 @@
 					<div class="control-group">
 					  <!-- name -->
 					  <div class="controls" style="margin-top:70px;">
-						<input type="text" id="name" name="name" placeholder="Name" class="input-xlarge col-md-5" pattern="[a-zA-Z]{3,25}" required title="Please enter Name. Its length can be 25 letters."> <!-- Uzunluk kısıtlaması -->
+						<input type="text" id="name" name="Name" placeholder="Name" class="input-xlarge col-md-5" pattern="[a-zA-Z]{3,25}" required title="Please enter Name. Its length can be 25 letters."> <!-- Uzunluk kısıtlaması -->
 					  </div>
 					</div>
 				 
 					<div class="control-group">
 					<!-- surname -->
 					  <div class="controls" style="margin-top:70px;">
-						<input type="text" id="surname" name="surname" placeholder="Surname" class="input-xlarge col-md-5 col-md-offset-2" pattern="[a-zA-Z]{3,25}" required title="Please enter Surname. Its length can be 25 letters.">	<!-- Uzunluk kısıtlaması -->
+						<input type="text" id="surname" name="Surname" placeholder="Surname" class="input-xlarge col-md-5 col-md-offset-2" pattern="[a-zA-Z]{3,25}" required title="Please enter Surname. Its length can be 25 letters.">	<!-- Uzunluk kısıtlaması -->
 					  </div>
 					</div>
 				 
 					<div class="control-group">
 					  <!-- Button -->
 					  <div class="controls" style="margin-top:120px;">
-						<button class="btn btn-info col-md-12">Register</button>
+						<button type="submit" class="btn btn-info col-md-12">Register</button>
 					  </div>
 					</div>
 				</fieldset>

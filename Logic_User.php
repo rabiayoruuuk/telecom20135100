@@ -11,6 +11,10 @@
 			$password = Logic_User :: generatePassword();
 			
 			$db = new DB();
+			
+			/* We have to call civil registry web service */
+			/* if it returns true, query will be executed else return will be false */
+			
 			$success = $db->executeQuery("INSERT INTO user(Name, Password, PhoneNumber, Surname, UserID) VALUES ('$name', '$password', '$phoneNumber', '$surname', '$userID')");
 
 			return $success;
@@ -109,6 +113,32 @@
 				return FALSE;
 			
 			return TRUE;
-		}		
+		}	
+		
+		public static function changePassword($oldPassword, $newPassword, $newPasswordAgain){
+			
+			$result = null;
+			
+			if(Logic_User::checkPasswordIsTrue($oldPassword)){
+				
+				if(strcmp($newPassword, $newPasswordAgain) == 0){
+					
+					$db = new DB();
+					$result = $db->executeQuery("UPDATE user SET Password = '$newPassword' WHERE Password = '$oldPassword'");
+				}	
+			}
+				
+			return $result;
+		}
+		
+		public static function getIDWithPhoneNumber($phoneNumber){
+			
+			$db = new DB();
+			$result = $db->getDataTable("Select ID From user WHERE PhoneNumber = '$phoneNumber'");
+			
+			$row = $result->fetch_assoc();
+			
+			return $row['ID'];
+		}
 	}
 ?>

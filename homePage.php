@@ -1,3 +1,31 @@
+<?php 
+
+	include ("BusinessLayer/Logic_User.php");
+	
+	function Redirect($url, $statusCode = 303)	/* Hocaya soralým */
+	{
+				
+		if (headers_sent() === false)
+		{
+			header('Location: ' . $url, true, $statusCode);
+		}
+
+		exit();	/*Destruct the this page */
+	}
+	
+	if(!empty($_COOKIE["Name"])){
+		
+		
+	}
+	else{
+		
+		echo '<script language="javascript">';
+		echo 'alert("You did not log in!")';
+		echo '</script>';
+		//die();
+		//redirect('http://localhost:8080/project/login.php', false);
+	}
+?>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -14,7 +42,7 @@
 		<div class="bgColor" style="position: absolute; left: 0; top: 51px; right: 0;width:100%; height:50%;">
 		
 			<div style="position = relative; margin-top: 50px;">
-				<p align = "middle" style="font-size: 61px; font-weight: bold; color: #fff;">John DOE</p>
+				<p align = "middle" style="font-size: 61px; font-weight: bold; color: #fff;"><?php echo $name = $_COOKIE["Name"];?></p>
 				<p align = "middle" style="font-size: 30px; font-weight: bold; color: #fff;">Remaining Usage</p>
 			</div>
 		
@@ -23,17 +51,17 @@
 				<div align="middle" style ="top: 75px; bottom: 0; width:33%; height:100%; float: left;">
 					<img src="cellular.png" class="img-rounded"/>
 					<p style="color: #fff; font-size: 19px; margin-top: 10px;">Remaining Cellular: 1GB</p>
-					<button class="btn" style="color: #fff; font-weight: bold;">Add Cellular</button>
+					<a href="addUsage.php" class="btn" style="color: #fff; font-weight: bold; background: #e7e7e7;">Add Cellular</a>
 				</div>			
 				<div align="middle" style ="top: 51px; bottom: 0; width:33%; height:100%; float: left;">
 					<img src="minute.png" class="img-rounded"/>
 					<p style="color: #fff; font-size: 19px; margin-top: 10px;">Remaining Minutes: 100 minutes</p>
-					<button class="btn" style="color: #fff; font-weight: bold;">Add Minute</button>
+					<a href="addUsage.php" class="btn" style="color: #fff; font-weight: bold; background: #e7e7e7;">Add Minute</a>
 				</div>
 				<div align="middle" style ="top: 51px; bottom: 0; width:33%; height:100%; float: left;">
 					<img src="message.png" class="img-rounded"/>
 					<p style="color: #fff; font-size: 19px; margin-top: 10px;">Remaining Messages: 100 messages</p>
-					<button class="btn" style="color: #fff; font-weight: bold;">Add Message</button>
+					<a href="addUsage.php" class="btn" style="color: #fff; font-weight: bold; background: #e7e7e7;">Add Message</a>
 				</div>
 			</div>
 		</div>
@@ -42,17 +70,17 @@
 		<p align = "middle" style="font-size: 35px; font-weight: bold; color: #2eccfa;">Campaigns</p>
 		
 			<div align="middle" style =" height: 100%; width:33%; float: left;">
-				<a href="recipe.php">
+				<a href="receipe.php">
 				<img src="shop.png" class="img-rounded"/>
 				<p style=" font-weight: bold; font-size: 17px;">1000 Packet</p></a>
 			</div>			
 			<div align="middle" style =" height: 100%; width:33%; height:100%; float: left;">
-				<a href="recipe.php">
+				<a href="receipe.php">
 				<img src="shop.png" class="img-rounded"/>
 				<p style=" font-weight: bold; font-size: 17px; margin-top: 10px;">5000 Packet</p></a>
 			</div>
 			<div align="middle" style =" height: 100%; width:33%; height:100%; float: left;">
-				<a href="recipe.php">
+				<a href="receipe.php">
 				<img src="shop.png" class="img-rounded"/>
 				<p style=" font-weight: bold; font-size: 17px; margin-top: 10px;">10000 Packet</p></a>
 			</div>
