@@ -38,6 +38,4 @@
 			return $this->phoneNumber;
 		}
 	}
-
-
 ?>
