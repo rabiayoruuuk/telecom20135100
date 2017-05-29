@@ -1,7 +1,8 @@
 <?php 
 
-	require_once("K:\PHP\htdocs\project\DataLayer\DB.php");
-	require_once("K:\PHP\htdocs\project\BusinessLayer\User.php");
+	require_once("DataLayer\DB.php");
+	require_once("User.php");
+	require_once("CallService.php");
 
 	class Logic_User{
 		
@@ -11,9 +12,18 @@
 			$password = Logic_User :: generatePassword();
 			
 			$db = new DB();
-			$success = $db->executeQuery("INSERT INTO user(Name, Password, PhoneNumber, Surname, UserID) VALUES ('$name', '$password', '$phoneNumber', '$surname', '$userID')");
 
-			return $success;
+			/* We have to call civil registry web service */
+			/* if it returns true, query will be executed else return will be false */
+			if(CallService::callServices($userID, "Civil Registry") === "TRUE"){	/* T.C. Personal unique number */
+			
+				$success = $db->executeQuery("INSERT INTO user(Name, Password, PhoneNumber, Surname, UserID) VALUES ('$name', '$password', '$phoneNumber', '$surname', '$userID')");
+				return TRUE;
+			}
+			else{
+				
+				return FALSE;
+			}
 		}
 		
 		private static function generatePhoneNumber($name, $surname){	/* 3 basamak random, 2 basamak isimden 3 basamak soy isimden 0529 þirketin kodu */
@@ -40,6 +50,7 @@
 					$nameLength = $randomForName . $nameLength;
 				
 				$randomForSurname = rand(5, 9);
+				
 				if($surnameLength < 10)
 					$surnameLength = $randomForSurname . $surnameLength;
 			}
@@ -109,6 +120,59 @@
 				return FALSE;
 			
 			return TRUE;
-		}		
+		}	
+		
+		public static function changePassword($oldPassword, $newPassword, $newPasswordAgain){
+			
+			$result = null;
+			
+			if(Logic_User::checkPasswordIsTrue($oldPassword)){
+				
+				if(strcmp($newPassword, $newPasswordAgain) == 0){
+					
+					$db = new DB();
+					$result = $db->executeQuery("UPDATE user SET Password = '$newPassword' WHERE Password = '$oldPassword'");
+				}	
+			}
+				
+			return $result;
+		}
+		
+		public static function getIDWithPhoneNumber($phoneNumber){
+			
+			$db = new DB();
+			$result = $db->getDataTable("Select ID From user WHERE PhoneNumber = '$phoneNumber'");
+			
+			$row = $result->fetch_assoc();
+			
+			return $row['ID'];
+		}
+		
+		public static function getIDWithUserID($userID){
+			
+			$db = new DB();
+			$result = $db->getDataTable("Select ID From user WHERE UserID = '$userID'");
+			
+			$row = $result->fetch_assoc();
+			
+			return $row['ID'];
+		}
+		
+		public static function getBillInfo($userID){
+			
+			$db = new DB();
+			$result = $db->getDataTable("Select ID From oldbill WHERE UserID = '$userID' AND PaidorNot = 1");
+			
+			$row = $result->fetch_assoc();
+			
+			if($row['ID'] != NULL){
+				
+				return true;
+			}
+			else{
+				
+				return false;
+			}
+		}
 	}
 ?>
